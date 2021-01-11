@@ -55,8 +55,8 @@ const HeaderComponent = () => {
 
             {/* Sign up and Sign in */}
             <div className="flex items-center">
-                <button className="inline-block w-32 py-2 m-2 text-xs font-bold text-center text-blue-500 uppercase border rounded-3xl hover:bg-blue-50" onClick={() => history.push("/login")}>Login</button>
-                <button className="inline-block w-32 py-2 m-2 text-xs font-bold text-center text-white uppercase bg-blue-500 border border-blue-500 rounded-3xl hover:bg-blue-400"  onClick={() => history.push("/signUp")}>Sign Up</button>
+                <button className="inline-block w-32 py-2 m-2 text-xs font-bold text-center text-blue-500 uppercase border focus:outline-none rounded-3xl hover:bg-blue-50" onClick={() => history.push("/login")}>Login</button>
+                <button className="inline-block w-32 py-2 m-2 text-xs font-bold text-center text-white uppercase bg-blue-500 border border-blue-500 focus:outline-none rounded-3xl hover:bg-blue-400"  onClick={() => history.push("/signUp")}>Sign Up</button>
             </div>
         </div>
         // <div>
