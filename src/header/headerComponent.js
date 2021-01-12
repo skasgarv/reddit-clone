@@ -1,38 +1,13 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
 
 import history from "../history";
 import RedditLogo from "../Webp.net-resizeimage.png";
 
 const HeaderComponent = () => {
-    // useEffect(() => {
-    //     let active = true;
-
-    //     if (!loading) {
-    //         return undefined;
-    //     }
-
-    //     // Trending topics
-    //     (async () => {
-    //         const response = await fetch("https://country.register.gov.uk/records.json?page-size=5000");
-    //         const countries = await response.json();
-
-    //         if (active) {
-    //             setOptions(Object.keys(countries).map((key) => countries[key].item[0]));
-    //         }
-    //     })();
-
-    //     return () => {
-    //         active = false;
-    //     };
-    // }, [loading]);
-
-    // React.useEffect(() => {
-    //     if (!open) {
-    //         setOptions([]);
-    //     }
-    // }, [open]);
-
-
+    const [value, setValue] = useState("")
+    useEffect(() => {
+        setValue(new URLSearchParams(history.location.search).get("q"))
+    }, [new URLSearchParams(history.location.search).get("q")])
 
     const handleSubmit = (evt) => {
         evt.preventDefault();
