@@ -5,52 +5,53 @@
  * 3. side details which will read the prop sent by parent component and display that component accordingly.
  */
 
-import Axios from "axios";
-import { useEffect, useState } from "react";
-
 import history from "../../../history";
 
-const DetailsComponent = () => {
-    const [posts, setPosts] = useState([]);
+const DetailsComponent = (props) => {
+     /**
+     * id
+     * subreddit_name_prefixed
+     * author
+     * permalink
+     * created_utc
+     * thumbnail
+     * title
+     * url
+     * preview
+     * num_comments
+     */
+    const posts = props.posts;
 
-    useEffect(() => {
-        Axios.get("https://www.reddit.com/r/popular.json").then((res) => {
-            console.log(res);
-            let popularPosts = res.data.data.children;
-            setPosts(popularPosts);
-            console.log(popularPosts);
-        });
-    }, []);
 
     return (
         <div className="container flex mx-auto">
             {/* Post cards */}
             <div className="w-160">
                 {posts.map((post) => (
-                    <div key={post.data.id} className="flex mb-4 bg-white rounded-xl">
-                        <div className="w-10 text-center bg-gray-200 rounded-l-lg">
+                    <div key={post.id} className="flex mb-4 bg-white border-2 rounded hover:border-gray-700">
+                        <div className="w-10 text-center bg-gray-50 rounded-l-r">
                             <p>Vote here</p>
                         </div>
-                        <div className="w-full">
+                        <div className="w-full ">
                             {/* Show avatar, sub reddit data, posted by and time */}
                             <div className="flex items-center">
                                 <img className="w-10 mr-2 border rounded"></img>
-                                <p className="text-xs font-bold cursor-pointer hover:underline" onClick={() => history.push(`${post.data.subreddit_name_prefixed}`)}>
-                                    {post.data.subreddit_name_prefixed}
+                                <p className="text-xs font-bold cursor-pointer hover:underline" onClick={() => history.push(`${post.subreddit_name_prefixed}`)}>
+                                    {post.subreddit_name_prefixed}
                                 </p>
                                 <p className="p-1 text-xs text-gray-500">• Posted by</p>
-                                <p className="pt-1 pb-1 pr-1 text-xs text-gray-500 cursor-pointer hover:underline" onClick={() => history.push(`/u/${post.data.author}`)}>
-                                    u/{post.data.author}
+                                <p className="pt-1 pb-1 pr-1 text-xs text-gray-500 cursor-pointer hover:underline" onClick={() => history.push(`/u/${post.author}`)}>
+                                    u/{post.author}
                                 </p>
-                                <div className="p-1 text-xs text-gray-500 cursor-pointer hover:underline" onClick={() => history.push(`/subRedditDetails${post.data.permalink}`)}>
+                                <div className="p-1 text-xs text-gray-500 cursor-pointer hover:underline" onClick={() => history.push(`/subRedditDetails${post.permalink}`)}>
                                     {
                                         <>
-                                            {Math.floor(Math.floor((new Date() - new Date(post.data.created_utc * 1000)) / 1000) / 60) && Math.floor(Math.floor((new Date() - new Date(post.data.created_utc * 1000)) / 1000) / 60) < 60 ? (
-                                                <div>{Math.floor(Math.floor((new Date() - new Date(post.data.created_utc * 1000)) / 1000) / 60)} minutes ago</div>
-                                            ) : Math.floor(Math.floor(Math.floor((new Date() - new Date(post.data.created_utc * 1000)) / 1000) / 60) / 60) && Math.floor(Math.floor(Math.floor((new Date() - new Date(post.data.created_utc * 1000)) / 1000) / 60) / 60) < 24 ? (
-                                                <div>{Math.floor(Math.floor(Math.floor((new Date() - new Date(post.data.created_utc * 1000)) / 1000) / 60) / 60)} hours ago</div>
-                                            ) : Math.floor(Math.floor(Math.floor(Math.floor((new Date() - new Date(post.data.created_utc * 1000)) / 1000) / 60) / 60) / 24) ? (
-                                                <div>{Math.floor(Math.floor(Math.floor(Math.floor((new Date() - new Date(post.data.created_utc * 1000)) / 1000) / 60) / 60) / 24)} days ago</div>
+                                            {Math.floor(Math.floor((new Date() - new Date(post.created_utc * 1000)) / 1000) / 60) && Math.floor(Math.floor((new Date() - new Date(post.created_utc * 1000)) / 1000) / 60) < 60 ? (
+                                                <div>{Math.floor(Math.floor((new Date() - new Date(post.created_utc * 1000)) / 1000) / 60)} minutes ago</div>
+                                            ) : Math.floor(Math.floor(Math.floor((new Date() - new Date(post.created_utc * 1000)) / 1000) / 60) / 60) && Math.floor(Math.floor(Math.floor((new Date() - new Date(post.created_utc * 1000)) / 1000) / 60) / 60) < 24 ? (
+                                                <div>{Math.floor(Math.floor(Math.floor((new Date() - new Date(post.created_utc * 1000)) / 1000) / 60) / 60)} hours ago</div>
+                                            ) : Math.floor(Math.floor(Math.floor(Math.floor((new Date() - new Date(post.created_utc * 1000)) / 1000) / 60) / 60) / 24) ? (
+                                                <div>{Math.floor(Math.floor(Math.floor(Math.floor((new Date() - new Date(post.created_utc * 1000)) / 1000) / 60) / 60) / 24)} days ago</div>
                                             ) : null}
                                         </>
                                     }
@@ -58,34 +59,37 @@ const DetailsComponent = () => {
                             </div>
                             {/* Show Title and Post details */}
                             <div className="flex">
-                                {post.data.thumbnail === "self" || post.data.thumbnail === "default" ? (
+                                {post.thumbnail === "self" || post.thumbnail === "default" ? (
                                     <>
                                         <div className="m-2 text-lg font-semibold text-left">
-                                            <div className="cursor-pointer" onClick={() => history.push(`/subRedditDetails${post.data.permalink}`)}>{post.data.title}</div>
-                                            <br></br>
-                                            <div className="mt-2 text-xs font-semibold text-left text-blue-500 cursor-pointer hover:underline" onClick={() => window.open(post.data.url)}>
-                                                {post.data.url.length > 40 ? <div>{post.data.url.substring(0, 30) + "..."}</div> : <div>{post.data.url}</div>}
+                                            <div className="cursor-pointer" onClick={() => history.push(`/subRedditDetails${post.permalink}`)}>{post.title}</div>
+                                            <div className="mt-2 text-xs font-semibold text-left text-blue-500 cursor-pointer hover:underline" onClick={() => window.open(post.url)}>
+                                                {post.url ?
+                                                    post.url.length > 40 ? <div>{post.url.substring(0, 30) + "..."}</div> : <div>{post.url}</div> :
+                                                    null}
                                             </div>
+                                            <br></br>
                                         </div>
                                     </>
                                 ) : (
                                     <>
-                                        {post.data.preview && post.data.preview.enabled ? null : (
+                                        {post.preview && post.preview.enabled ? null : (
                                             <>
                                                 <div className="m-2 text-lg font-semibold text-left w-250">
-                                                    <div className="cursor-pointer" onClick={() => history.push(`/subRedditDetails${post.data.permalink}`)}>{post.data.title}</div>
+                                                    <div className="cursor-pointer" onClick={() => history.push(`/subRedditDetails${post.permalink}`)}>{post.title}</div>
                                                     <div className="mt-2">
-                                                        {post.data.url.length > 40 ? (
-                                                            <div className="text-xs font-semibold text-left text-blue-500 cursor-pointer hover:underline">{post.data.url.substring(0, 30) + "..."}</div>
+                                                        {post.url ? post.url.length > 40 ? (
+                                                            <div className="text-xs font-semibold text-left text-blue-500 cursor-pointer hover:underline">{post.url.substring(0, 30) + "..."}</div>
                                                         ) : (
-                                                            <div className="text-xs font-semibold text-left text-blue-500 cursor-pointer hover:underline" onClick={() => window.open(post.data.url)}>
-                                                                {post.data.url}
+                                                            <div className="text-xs font-semibold text-left text-blue-500 cursor-pointer hover:underline" onClick={() => window.open(post.url)}>
+                                                                {post.url}
                                                             </div>
-                                                        )}
+                                                        ) : null}
                                                     </div>
+                                                    <br></br>
                                                 </div>
                                                 <div className="m-2">
-                                                    <img src={post.data.thumbnail} alt="post_thumbnail" className="border-2 border-blue-500 rounded" onClick={() => window.open(post.data.url)}></img>
+                                                    <img src={post.thumbnail} alt="post_thumbnail" className="border-2 border-blue-500 rounded" onClick={() => window.open(post.url)}></img>
                                                 </div>
                                             </>
                                         )}
@@ -94,13 +98,13 @@ const DetailsComponent = () => {
                             </div>
 
                             <div>
-                                {post.data.preview ? (
-                                    post.data.preview.enabled ? (
+                                {post.thumbnail !== "self" && post.thumbnail !== "default" && post.preview ? (
+                                    post.preview.enabled ? (
                                         <>
-                                            <div className="cursor-pointer" onClick={() => history.push(`/subRedditDetails${post.data.permalink}`)}>
-                                            <div className="w-full m-2 text-lg font-semibold text-left" >{post.data.title}</div>
+                                            <div className="cursor-pointer" onClick={() => history.push(`/subRedditDetails${post.permalink}`)}>
+                                            <div className="w-full m-2 text-lg font-semibold text-left" >{post.title}</div>
                                             <div className="m-2">
-                                                <img src={post.data.url} alt="post_thumbnail" className="mx-auto border-2 w-250"></img>
+                                                <img src={post.url} alt="post_thumbnail" className="mx-auto border-2 w-250"></img>
                                             </div>
                                             </div>
                                         </>
@@ -111,9 +115,9 @@ const DetailsComponent = () => {
                             {/* Show Comments icon */}
 
                             <div className="flex p-1">
-                                <div className="p-1 text-xs font-bold text-gray-500 rounded cursor-pointer hover:bg-gray-200" onClick={() => history.push(`/subRedditDetails${post.data.permalink}`)}>
+                                <div className="p-1 text-xs font-bold text-gray-500 rounded cursor-pointer hover:bg-gray-200" onClick={() => history.push(`/subRedditDetails${post.permalink}`)}>
                                     <i className="mr-1 fas fa-comment-alt fa-xs"></i>
-                                    <span className="font-bold">{post.data.num_comments} Comments</span>
+                                    <span className="font-bold">{post.num_comments} Comments</span>
                                 </div>
                                 <div className="p-1 text-xs font-bold text-gray-500 rounded cursor-pointer hover:bg-gray-200" onClick={() => history.push(`/r/${post.name}`)}>
                                     <i className="mr-1 fas fa-share fa-xs"></i>

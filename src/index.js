@@ -1,5 +1,3 @@
-import 'url-search-params-polyfill';
-
 import "./index.css";
 
 import React from "react";

@@ -24,7 +24,7 @@ const HeaderComponent = () => {
             {/* Search */}
             <div className="flex items-center mx-auto">
                 <form onSubmit={handleSubmit}>
-                    <input className="bg-gray-100 border-2 rounded w-160 hover:border-blue-500 hover:bg-white" placeholder=" Search"></input>
+                    <input className="bg-gray-100 border-2 rounded  w-160 hover:border-blue-500 hover:bg-white" placeholder=" Search"></input>
                 </form>
             </div>
 
