@@ -1,6 +1,9 @@
 const FilterComponent = () => {
     return (
-        <div>
+        <div className="container flex mx-auto">
+            <div>Hot</div>
+            <div>New</div>
+            <div>Top</div>
         </div>
     );
 };
