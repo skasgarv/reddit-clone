@@ -67,8 +67,7 @@ const DetailsComponent = (props) => {
                                             <p className="p-1 text-xs text-blue-500">PROMOTED</p>
                                         ) : (
                                             <div className="flex">
-                                                <img className="w-10 mr-2 border rounded"></img>
-                                                <p className="text-xs font-bold cursor-pointer hover:underline" onClick={() => history.push(`${post.subreddit_name_prefixed}`)}>
+                                                <p className="ml-2 text-xs font-bold cursor-pointer hover:underline" onClick={() => history.push(`${post.subreddit_name_prefixed}`)}>
                                                     {post.subreddit_name_prefixed}
                                                 </p>
                                             </div>

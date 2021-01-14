@@ -21,8 +21,8 @@ module.exports = {
           width: '100%',
           marginLeft: 'auto',
           marginRight: 'auto',
-          '@screen sm' : {maxWidth: '640px'},
-          '@screen md' : {maxWidth: '768px'},
+          '@screen sm' : {maxWidth: '500px'},
+          '@screen md' : {maxWidth: '700px'},
           '@screen lg' : {maxWidth: '975px'}
         },
         'searchBox': {

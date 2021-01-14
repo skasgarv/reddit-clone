@@ -13,79 +13,64 @@ import FilterComponent from "../shared/filter/filterComponent";
 
 const SubRedditPageComponent = () => {
     const [posts, setPosts] = useState([]);
-    const [banner, setBanner] = useState([]);
-    const [title, setTitle] = useState([]);
+    const [sideBarLoading, setSideBarLoading] = useState(true);
     const [loading, setLoading] = useState(true);
     const [subRedditInfo, setSubRedditInfo] = useState(true);
+    const [url, setUrl] = useState(`https://www.reddit.com/r/${history.location.pathname.substr(3, history.location.pathname.length)}.json`);
+
     useEffect(() => {
-        Axios.get(`https://gateway.reddit.com/desktopapi/v1/subreddits/${history.location.pathname.substr(3, history.location.pathname.length)}?rtj=only&redditWebClient=web2x&app=web2x-client-production&allow_over18=&include=structuredStyles%2CprefsSubreddit&geo_filter=US&layout=card`).then(
+        Axios.get(`${url}`).then(
             (res) => {
-                console.log(res);
-                Object.keys(res.data.subreddits).forEach((subRedditId) => {
-                    if ("/" + res.data.subreddits[subRedditId].displayText === history.location.pathname) {
-                        setTitle({
-                            titleText: res.data.subreddits[subRedditId].title,
-                            subRedditText: res.data.subreddits[subRedditId].displayText,
-                        });
-                    }
-                });
-
-                let style = res.data.structuredStyles.data.style;
-                let consumableBanner = {
-                    backgroundImagePosition: style.backgroundImagePosition,
-                    bannerBackgroundColor: style.bannerBackgroundColor ? style.bannerBackgroundColor : "#3f9ade",
-                    bannerHeight: style.bannerHeight,
-                    bannerPositionedImage: style.bannerPositionedImage,
-                    bannerBackgroundImage: style.bannerBackgroundImage,
-                    backgroundColor: style.backgroundColor,
-                };
-                setBanner(consumableBanner);
-
                 let consumablePosts = [];
-                Object.keys(res.data.posts).forEach((post) => {
-                    let preview = {};
-                    let url = null;
-                    if (res.data.posts[post].callToAction === null && res.data.posts[post].preview !== undefined) {
-                        preview.enabled = true;
-                        url = res.data.posts[post].preview.url;
-                    } else {
-                        preview.enabled = false;
-                        url = res.data.posts[post].domain;
-                    }
+                res.data.data.children.forEach((post) => {
                     consumablePosts.push({
-                        id: res.data.posts[post].id,
-                        subreddit_name_prefixed: history.location.pathname,
-                        author: res.data.posts[post].author,
-                        permalink: res.data.posts[post].permalink.includes("https://www.reddit.com/") ? res.data.posts[post].permalink.substr(22, res.data.posts[post].permalink.length) : res.data.posts[post].permalink,
-                        created_utc: res.data.posts[post].created / 1000,
-                        thumbnail: res.data.posts[post].thumbnail.url,
-                        title: res.data.posts[post].title,
-                        url: url,
-                        preview: preview,
-                        num_comments: res.data.posts[post].numComments,
-                        score: convertScoreToReadableFormat(res.data.posts[post].score),
-                        isSponsored: res.data.posts[post].isSponsored,
+                        id: post.data.id,
+                        subreddit_name_prefixed: post.data.subreddit_name_prefixed,
+                        author: post.data.author,
+                        permalink: post.data.permalink,
+                        created_utc: post.data.created_utc,
+                        thumbnail: post.data.thumbnail,
+                        title: post.data.title,
+                        url: post.data.url,
+                        preview: post.data.preview,
+                        num_comments: post.data.num_comments,
+                        score: convertScoreToReadableFormat(post.data.score),
+                        isSponsored: post.data.isSponsored,
                     });
                 });
-
-                // console.log(res.data.subredditAboutInfo)
-                let consumableSubRedditInfo = {};
-                Object.keys(res.data.subredditAboutInfo).forEach((subredditAboutInfo) => {
-                    consumableSubRedditInfo = {
-                        publicDescription: res.data.subredditAboutInfo[subredditAboutInfo].publicDescription,
-                        subscribers: convertScoreToReadableFormat(res.data.subredditAboutInfo[subredditAboutInfo].subscribers),
-                        accountsActive: convertScoreToReadableFormat(res.data.subredditAboutInfo[subredditAboutInfo].accountsActive),
-                        created: new Date(res.data.subredditAboutInfo[subredditAboutInfo].created * 1000).toGMTString().split(" ", 4).join(" "),
-                    };
-                    console.log(consumableSubRedditInfo);
-                });
-
                 setPosts(consumablePosts);
-                setSubRedditInfo(consumableSubRedditInfo);
                 setLoading(false);
             }
         );
-    }, []);
+    }, [url]);
+
+    useEffect(() => {
+        Axios.get(`https://www.reddit.com/r/${history.location.pathname.substr(3, history.location.pathname.length)}/about.json`).then((res) => {
+            setSubRedditInfo({
+                title: res.data.data.header_title,
+                subRedditName: res.data.data.display_name_prefixed,
+                publicDescription: res.data.data.public_description,
+                subscribers: convertScoreToReadableFormat(res.data.data.subscribers),
+                accountsActive: convertScoreToReadableFormat(res.data.data.accounts_active),
+                created: new Date(res.data.data.created * 1000).toGMTString().split(" ", 4).join(" "),
+                subRedditImg: res.data.data.icon_img
+            });
+            setSideBarLoading(false)
+        })
+    }, [])
+
+    const filterClicked = (evt) => {
+        setLoading(true);
+        if (evt === "hot") {
+            setUrl(`https://www.reddit.com/r/${history.location.pathname.substr(3, history.location.pathname.length)}/hot.json`);
+        } else if (evt === "new") {
+            setUrl(`https://www.reddit.com/r/${history.location.pathname.substr(3, history.location.pathname.length)}/new.json`);
+        } else if (evt === "top") {
+            setUrl(`https://www.reddit.com/r/${history.location.pathname.substr(3, history.location.pathname.length)}/top.json`);
+        } else if (evt === "rising") {
+            setUrl(`https://www.reddit.com/r/${history.location.pathname.substr(3, history.location.pathname.length)}/rising.json`);
+        }
+    };
 
     const convertScoreToReadableFormat = (num) => {
         if (num === null) {
@@ -104,36 +89,23 @@ const SubRedditPageComponent = () => {
 
     return (
         <div className="pt-12">
-            {banner.bannerHeight === "large" ? (
-                <>
-                    <div className="w-full h-full mb-1 border-t-2" style={{ backgroundColor: banner.bannerBackgroundColor }}>
-                        <div className="mx-auto">
-                            {banner.bannerBackgroundImage ? <img className="object-cover w-full" src={banner.bannerBackgroundImage} alt="banner_img"></img> : banner.bannerPositionedImage ? <img className="p-4 mx-auto" src={banner.bannerPositionedImage} alt="banner_img"></img> : null}
-                        </div>
-                    </div>
-                </>
-            ) : (
-                <>
-                    <div className="w-full mb-1 border-t-2" style={{ backgroundColor: banner.bannerBackgroundColor }}>
-                        <div className="mx-auto">{banner.bannerBackgroundImage ? <img className="bg-cover" src={banner.bannerBackgroundImage} alt="banner_img"></img> : banner.bannerPositionedImage ? <img className="p-4 mx-auto" src={banner.bannerPositionedImage} alt="banner_img"></img> : null}</div>
-                    </div>
-                </>
-            )}
-
             <div className="container mb-4 text-left">
                 <div className="flex m-2">
-                    <img className="w-10 mr-2 border rounded"></img>
+                    <img className="w-20 mr-2 border rounded-3xl" src={subRedditInfo.subRedditImg} alt="subreddit-logo"></img>
                     <div>
-                        <div className="text-3xl font-bold text-left">{title.titleText}</div>
-                        <div className="text-sm font-bold text-gray-600">{title.subRedditText}</div>
+                        <div className="text-3xl font-bold text-left">{subRedditInfo.title}</div>
+                        <div className="text-sm font-bold text-gray-600">{subRedditInfo.subRedditName}</div>
                     </div>
                 </div>
             </div>
-            <hr></hr>
+            <hr className="mb-2"></hr>
+            <div className="ml-8">
+                <FilterComponent filterClicked={filterClicked}></FilterComponent>
+            </div>
             <div className="flex mt-4">
                 <div className="container flex">
                     <DetailsComponent posts={posts} loading={loading}></DetailsComponent>
-                    {loading ? (
+                    {sideBarLoading ? (
                         <div>
                             <div className="mx-auto animate-pulse">
                                 <div className="flex">

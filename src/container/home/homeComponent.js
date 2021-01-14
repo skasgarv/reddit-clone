@@ -12,8 +12,9 @@ const HomeComponent = () => {
     const [loading, setLoading] = useState(true);
     const [trendingSubReddits, setTrendingSubReddits] = useState([]);
     const [trendingSubRedditsLoading, setTrendingSubRedditsLoading] = useState([true]);
+    const [url, setUrl] = useState("https://www.reddit.com/r/popular.json");
     useEffect(() => {
-        Axios.get("https://www.reddit.com/r/popular.json").then((res) => {
+        Axios.get(url).then((res) => {
             let consumablePosts = [];
             res.data.data.children.forEach((post) => {
                 consumablePosts.push({
@@ -38,7 +39,20 @@ const HomeComponent = () => {
             setTrendingSubReddits(res.data.subreddit_names);
             setTrendingSubRedditsLoading(false);
         });
-    }, []);
+    }, [url]);
+
+    const filterClicked = (evt) => {
+        setLoading(true);
+        if (evt === "hot") {
+            setUrl("https://www.reddit.com/hot.json");
+        } else if (evt === "new") {
+            setUrl("https://www.reddit.com/new.json");
+        } else if (evt === "top") {
+            setUrl("https://www.reddit.com/top.json");
+        } else if (evt === "rising") {
+            setUrl("https://www.reddit.com/rising.json");
+        }
+    };
     const convertScoreToReadableFormat = (num) => {
         if (num === null) {
             return null;
@@ -57,50 +71,50 @@ const HomeComponent = () => {
     return (
         <div className="p-12">
             <TrendingTodayComponent loading={loading}></TrendingTodayComponent>
+            <div className="ml-8">
+                <FilterComponent filterClicked={filterClicked}></FilterComponent>
+            </div>
             <div className="flex mt-4">
                 <div className="container flex">
                     <DetailsComponent posts={posts} loading={loading}></DetailsComponent>
                     <div>
-                        <div>
-                            <div className="mx-auto">
-                                <div className="flex">
-                                    {trendingSubRedditsLoading ? (
-                                        <div className="animate-pulse">
-                                            <div className="p-2 text-left text-white text-md bg-gradient-to-r from-blue-600 via-blue-400 to-green-300 h-18">
-                                                <div className="flex">
-                                                    <img className="h-14" src="https://www.redditstatic.com/desktop2x/img/discovery/magnifying-glass-snoo.png" alt="magnifying-glass-logo"></img>
-                                                    <div className="mt-1 ml-2">
-                                                        <div>SubReddits —</div>
-                                                        <div>See whats's trending</div>
-                                                    </div>
+                        <div className="mx-auto">
+                            <div className="flex">
+                                {trendingSubRedditsLoading ? (
+                                    <div className="animate-pulse">
+                                        <div className="p-2 text-left text-white text-md bg-gradient-to-r from-blue-600 via-blue-400 to-green-300 h-18">
+                                            <div className="flex">
+                                                <img className="h-14" src="https://www.redditstatic.com/desktop2x/img/discovery/magnifying-glass-snoo.png" alt="magnifying-glass-logo"></img>
+                                                <div className="mt-1 ml-2">
+                                                    <div>SubReddits —</div>
+                                                    <div>See whats's trending</div>
                                                 </div>
                                             </div>
                                         </div>
-                                    ) : (
-                                        <div className="relative h-auto w-80">
-                                            <div className="p-2 text-left text-white text-md bg-gradient-to-r from-blue-600 via-blue-400 to-green-300 h-18">
-                                                <div className="flex">
-                                                    <img className="h-14" src="https://www.redditstatic.com/desktop2x/img/discovery/magnifying-glass-snoo.png" alt="magnifying-glass-logo"></img>
-                                                    <div className="mt-1 ml-2">
-                                                        <div>SubReddits —</div>
-                                                        <div>See whats's trending</div>
-                                                    </div>
+                                    </div>
+                                ) : (
+                                    <div className="relative h-auto w-80">
+                                        <div className="p-2 text-left text-white text-md bg-gradient-to-r from-blue-600 via-blue-400 to-green-300 h-18">
+                                            <div className="flex">
+                                                <img className="h-14" src="https://www.redditstatic.com/desktop2x/img/discovery/magnifying-glass-snoo.png" alt="magnifying-glass-logo"></img>
+                                                <div className="mt-1 ml-2">
+                                                    <div>SubReddits —</div>
+                                                    <div>See whats's trending</div>
                                                 </div>
                                             </div>
-                                            {trendingSubReddits.map((trendingSubReddit) => (
-                                                <div className="bg-white">
-                                                    <div class="cursor-pointer pt-2 mb-2 ml-2 text-left" onClick={() => history.push(`/r/${trendingSubReddit}`)}>
-                                                        <div className="flex">
-                                                            <img className="w-10 mr-2 border rounded"></img>
-                                                            <div>/r/{trendingSubReddit}</div>
-                                                        </div>
-                                                    </div>
-                                                    <hr></hr>
-                                                </div>
-                                            ))}
                                         </div>
-                                    )}
-                                </div>
+                                        {trendingSubReddits.map((trendingSubReddit) => (
+                                            <div key={trendingSubReddit} className="bg-white">
+                                                <div className="pt-2 mb-2 ml-2 text-left cursor-pointer" onClick={() => history.push(`/r/${trendingSubReddit}`)}>
+                                                    <div className="flex">
+                                                        <div>/r/{trendingSubReddit}</div>
+                                                    </div>
+                                                </div>
+                                                <hr></hr>
+                                            </div>
+                                        ))}
+                                    </div>
+                                )}
                             </div>
                         </div>
                     </div>

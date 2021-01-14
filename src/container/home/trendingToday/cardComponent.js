@@ -4,7 +4,6 @@ import history from "../../../history";
 
 export default function MediaCard(props) {
     let cardData = props && Object.keys(props).length ? props.trendingPost.results.data.children[0].data : null;
-    console.log(cardData);
     return (
         <div>
             {cardData ? (
