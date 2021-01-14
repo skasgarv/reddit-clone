@@ -30,22 +30,9 @@ const DetailsComponent = (props) => {
     return (
         <div>
             {loading ? (
-                <div className="container mx-auto animate-pulse w-160 ">
+                <div className="container mx-auto animate-pulse w-160 sm:w-100">
                     <div>
-                        <div className="flex mb-4 bg-white border-2 rounded hover:border-gray-700 h-96">
-                            <div className="w-10 text-center bg-gray-50 rounded-l-r">
-                                <div>
-                                    <FontAwesomeIcon className="mt-3 ml-1 mr-1 cursor-pointer" icon={faArrowCircleUp} />
-                                </div>
-                                <div>
-                                    <FontAwesomeIcon className="ml-1 mr-1 cursor-pointer" icon={faArrowCircleDown} />
-                                </div>
-                            </div>
-                            <div className="w-full"></div>
-                        </div>
-                    </div>
-                    <div>
-                        <div className="flex mb-4 bg-white border-2 rounded hover:border-gray-700 h-96">
+                        <div className="flex mb-4 bg-white border-2 rounded hover:border-gray-300 h-96">
                             <div className="w-10 text-center bg-gray-50 rounded-l-r">
                                 <div>
                                     <FontAwesomeIcon className="mt-3 ml-1 mr-1 cursor-pointer" icon={faArrowCircleUp} />
@@ -61,9 +48,9 @@ const DetailsComponent = (props) => {
             ) : (
                 <div className="container flex mx-auto">
                     {/* Post cards */}
-                    <div className="w-160">
+                    <div className="w-160 sm:w-100">
                         {posts.map((post) => (
-                            <div key={post.id} className="flex mb-4 bg-white border-2 rounded hover:border-gray-700">
+                            <div key={post.id} className="flex mb-4 bg-white border-2 rounded hover:border-gray-300">
                                 <div className="w-10 text-center bg-gray-50 rounded-l-r">
                                     <div>
                                         <FontAwesomeIcon className="mt-3 ml-1 mr-1 cursor-pointer" icon={faArrowCircleUp} />
