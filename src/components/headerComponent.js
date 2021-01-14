@@ -1,7 +1,7 @@
 import React from "react";
 
 import history from "../history";
-import RedditLogo from "../Webp.net-resizeimage.png";
+import RedditLogo from "./redditLogo.png";
 
 const HeaderComponent = () => {
     const handleSubmit = (evt) => {

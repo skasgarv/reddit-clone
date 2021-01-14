@@ -2,7 +2,7 @@ import './App.css';
 
 import {BrowserRouter as Router} from 'react-router-dom';
 
-import HeaderComponent from "./header/headerComponent";
+import HeaderComponent from "./components/headerComponent";
 import Routes from "./router";
 
 function App() {

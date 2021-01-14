@@ -1,10 +1,10 @@
 import React from 'react';
 import { Route, Router, Switch } from 'react-router-dom';
 
-import HomeComponent from "./container/home/homeComponent";
-import SearchResults from "./container/searchResults/searchResultsComponent";
-import SubRedditPageComponent from './container/subReddit/subRedditComponent';
 import history from "./history";
+import HomeComponent from "./pages/home/homeComponent";
+import SearchResults from "./pages/searchResults/searchResultsComponent";
+import SubRedditPageComponent from './pages/subReddit/subRedditComponent';
 
 function Routes (){
      return (

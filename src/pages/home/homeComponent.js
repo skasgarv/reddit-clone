@@ -2,9 +2,9 @@ import Axios from "axios";
 import React from "react";
 import { useEffect, useState } from "react";
 
+import DetailsComponent from "../../components/detailsComponent";
+import FilterComponent from "../../components/filterComponent";
 import history from "../../history";
-import DetailsComponent from "../shared/detailsComponent/detailsComponent";
-import FilterComponent from "../shared/filter/filterComponent";
 import TrendingTodayComponent from "./trendingToday/trendingTodayComponent";
 
 const HomeComponent = () => {

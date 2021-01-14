@@ -8,7 +8,7 @@
 import { faArrowCircleDown, faArrowCircleUp, faBookmark, faCommentAlt, faShare } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-import history from "../../../history";
+import history from "../history";
 
 const DetailsComponent = (props) => {
     /**
@@ -127,7 +127,7 @@ const DetailsComponent = (props) => {
                                                             <br></br>
                                                         </div>
                                                         <div className="m-2">
-                                                            <img src={post.thumbnail} alt="post_thumbnail" className="border-2 border-blue-500 rounded" onClick={() => window.open(post.url)}></img>
+                                                            <img src={post.thumbnail} alt="post_thumbnail" className="border-2 border-blue-500 rounded cursor-pointer" onClick={() => window.open(post.url)}></img>
                                                         </div>
                                                     </>
                                                 )}

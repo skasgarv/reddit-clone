@@ -2,7 +2,7 @@ import React from "react";
 
 import history from "../../../history";
 
-export default function MediaCard(props) {
+export default function TrendingTodayCard(props) {
     let cardData = props && Object.keys(props).length ? props.trendingPost.results.data.children[0].data : null;
     return (
         <div>

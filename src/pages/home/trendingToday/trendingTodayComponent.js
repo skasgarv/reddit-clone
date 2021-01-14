@@ -1,7 +1,7 @@
 import Axios from "axios";
 import { useEffect, useState } from "react";
 
-import MediaCard from "./cardComponent";
+import TrendingTodayCard from "./trendingTodayCardComponent";
 
 const TrendingTodayComponent = (props) => {
     const [trendingPosts, setTrendingPosts] = useState([]);
@@ -25,8 +25,8 @@ const TrendingTodayComponent = (props) => {
             {loading ? (
                 <div className="container mx-auto animate-pulse">
                     <div className="flex mb-4">
-                        <MediaCard></MediaCard>
-                        <MediaCard></MediaCard>
+                        <TrendingTodayCard></TrendingTodayCard>
+                        <TrendingTodayCard></TrendingTodayCard>
                     </div>
                 </div>
             ) : (
@@ -36,7 +36,7 @@ const TrendingTodayComponent = (props) => {
                     </div>
                     <div className="flex mb-4">
                         {trendingPosts.slice(0, 4).map((trendingPost) => (
-                            <MediaCard key={trendingPost.query_string} trendingPost={trendingPost}></MediaCard>
+                            <TrendingTodayCard key={trendingPost.query_string} trendingPost={trendingPost}></TrendingTodayCard>
                         ))}
                     </div>
                 </div>
