@@ -14,31 +14,39 @@ const HomeComponent = () => {
     const [trendingSubRedditsLoading, setTrendingSubRedditsLoading] = useState([true]);
     const [url, setUrl] = useState("https://www.reddit.com/r/popular.json");
     useEffect(() => {
-        Axios.get(url).then((res) => {
-            let consumablePosts = [];
-            res.data.data.children.forEach((post) => {
-                consumablePosts.push({
-                    id: post.data.id,
-                    subreddit_name_prefixed: post.data.subreddit_name_prefixed,
-                    author: post.data.author,
-                    permalink: post.data.permalink,
-                    created_utc: post.data.created_utc,
-                    thumbnail: post.data.thumbnail,
-                    title: post.data.title,
-                    url: post.data.url,
-                    preview: post.data.preview,
-                    num_comments: post.data.num_comments,
-                    score: convertScoreToReadableFormat(post.data.score),
-                    isSponsored: post.data.isSponsored,
+        Axios.get(url)
+            .then((res) => {
+                let consumablePosts = [];
+                res.data.data.children.forEach((post) => {
+                    consumablePosts.push({
+                        id: post.data.id,
+                        subreddit_name_prefixed: post.data.subreddit_name_prefixed,
+                        author: post.data.author,
+                        permalink: post.data.permalink,
+                        created_utc: post.data.created_utc,
+                        thumbnail: post.data.thumbnail,
+                        title: post.data.title,
+                        url: post.data.url,
+                        preview: post.data.preview,
+                        num_comments: post.data.num_comments,
+                        score: convertScoreToReadableFormat(post.data.score),
+                        isSponsored: post.data.isSponsored,
+                    });
                 });
+                setPosts(consumablePosts);
+                setLoading(false);
+            })
+            .catch((err) => {
+                console.error("Error in getting posts: ", err);
             });
-            setPosts(consumablePosts);
-            setLoading(false);
-        });
-        Axios.get("https://www.reddit.com/api/trending_subreddits.json").then((res) => {
-            setTrendingSubReddits(res.data.subreddit_names);
-            setTrendingSubRedditsLoading(false);
-        });
+        Axios.get("https://www.reddit.com/api/trending_subreddits.json")
+            .then((res) => {
+                setTrendingSubReddits(res.data.subreddit_names);
+                setTrendingSubRedditsLoading(false);
+            })
+            .catch((err) => {
+                console.error("Error in getting trending sub reddits: ", err);
+            });
     }, [url]);
 
     const filterClicked = (evt) => {

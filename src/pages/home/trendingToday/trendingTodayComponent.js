@@ -18,7 +18,7 @@ const TrendingTodayComponent = (props) => {
                     })
                 );
             })
-            .catch((err) => console.log("Unable to fetch trending posts: ", err));
+            .catch((err) => console.error("Unable to fetch trending posts: ", err));
     }, []);
     return (
         <div>

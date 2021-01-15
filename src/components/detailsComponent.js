@@ -116,7 +116,9 @@ const DetailsComponent = (props) => {
                                                             <div className="mt-2">
                                                                 {post.url ? (
                                                                     post.url.length > 40 ? (
-                                                                        <div className="text-xs font-semibold text-left text-blue-500 cursor-pointer hover:underline" onClick={() => window.open(post.url)}>{post.url.substring(0, 30) + "..."}</div>
+                                                                        <div className="text-xs font-semibold text-left text-blue-500 cursor-pointer hover:underline" onClick={() => window.open(post.url)}>
+                                                                            {post.url.substring(0, 30) + "..."}
+                                                                        </div>
                                                                     ) : (
                                                                         <div className="text-xs font-semibold text-left text-blue-500 cursor-pointer hover:underline" onClick={() => window.open(post.url)}>
                                                                             {post.url}
@@ -126,9 +128,11 @@ const DetailsComponent = (props) => {
                                                             </div>
                                                             <br></br>
                                                         </div>
-                                                        <div className="m-2">
-                                                            <img src={post.thumbnail} alt="post_thumbnail" className="border-2 border-blue-500 rounded cursor-pointer" onClick={() => window.open(post.url)}></img>
-                                                        </div>
+                                                        {post.thumbnail ? (
+                                                            <div className="m-2">
+                                                                <img src={post.thumbnail} alt="post_thumbnail" className="border-2 border-blue-500 rounded cursor-pointer" onClick={() => window.open(post.url)}></img>
+                                                            </div>
+                                                        ) : null}
                                                     </>
                                                 )}
                                             </>
@@ -174,6 +178,7 @@ const DetailsComponent = (props) => {
                     </div>
                 </div>
             )}
+            {props.children}
         </div>
     );
 };
