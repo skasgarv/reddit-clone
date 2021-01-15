@@ -36,17 +36,20 @@ const PostDetailComponent = () => {
                 let consumableComments = [];
                 res.data[1].data.children.forEach((child) => {
                     let data = child.data;
-                    consumableComments.push({
-                        id: data.id,
-                        author: data.author,
-                        body: data.body,
-                        created: data.created,
-                        replies: data.replies,
-                        score: data.score,
-                    });
+                    // console.log(data);
+                    // Axios.get(`https://www.reddit.com/user/${data.author}/about.json`).then((resp) => {
+                    //     consumableComments.push({
+                    //         id: data.id,
+                    //         author: data.author,
+                    //         body: data.body,
+                    //         created: data.created,
+                    //         replies: data.replies,
+                    //         score: data.score,
+                    //         authorImg: resp.data.data.icon_img,
+                    //     });
+                    //     setComments(consumableComments);
+                    // });
                 });
-                setComments(consumableComments);
-
                 setLoading(false);
             })
             .catch((err) => {

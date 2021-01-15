@@ -4,8 +4,9 @@ import React from "react";
 
 function Comment({ comment, className }) {
     let nestedComments = null;
-    if (comment.hasOwnProperty("replies")) {
-        if (comment.replies.hasOwnProperty("data")) {
+    if (comment && comment.hasOwnProperty("replies")) {
+        if (comment.replies && comment.replies.hasOwnProperty("data")) {
+            // console.log(comment)
             nestedComments = (comment.replies.data.children || []).map((comment) => {
                 return <Comment className="mt-2 mb-3 ml-8" key={comment.data.id} comment={comment.data} type="child" />;
             });
@@ -26,7 +27,7 @@ function Comment({ comment, className }) {
                         <div>
                             <FontAwesomeIcon className="text-gray-500 cursor-pointer" icon={faArrowCircleUp} />
                         </div>
-                        <div className="m-1 text-xs font-bold text-black">123</div>
+                        <div className="m-1 text-xs font-bold text-black">{comment.score}</div>
                         <div>
                             <FontAwesomeIcon className="text-gray-500 cursor-pointer" icon={faArrowCircleDown} />
                         </div>
