@@ -1,12 +1,23 @@
 import { faArrowCircleDown, faArrowCircleUp, faComment } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import React from "react";
+import Axios from "axios";
+import React, { useEffect, useState } from "react";
 
 function Comment({ comment, className }) {
+
+    const [img, setImg] = useState(null);
+    useEffect(() => {
+        if (comment.author) {
+            console.log("Hello", comment.author)
+            Axios.get(`https://www.reddit.com/user/${comment.author}/about.json`).then((resp) => {
+                setImg()
+            })
+        }
+    })
     let nestedComments = null;
     if (comment && comment.hasOwnProperty("replies")) {
         if (comment.replies && comment.replies.hasOwnProperty("data")) {
-            // console.log(comment)
+            console.log(comment)
             nestedComments = (comment.replies.data.children || []).map((comment) => {
                 return <Comment className="mt-2 mb-3 ml-8" key={comment.data.id} comment={comment.data} type="child" />;
             });
