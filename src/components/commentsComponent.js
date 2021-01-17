@@ -1,64 +1,86 @@
-import { faArrowCircleDown, faArrowCircleUp, faComment } from "@fortawesome/free-solid-svg-icons";
+import { faArrowCircleDown, faArrowCircleUp, faCommentAlt, faMicrophone, faShieldVirus, faUser } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import Axios from "axios";
-import React, { useEffect, useState } from "react";
+import React from "react";
+import ReactHtmlParser from "react-html-parser";
+
+import history from "../history";
 
 function Comment({ comment, className }) {
-
-    const [img, setImg] = useState(null);
-    useEffect(() => {
-        if (comment.author) {
-            console.log("Hello", comment.author)
-            Axios.get(`https://www.reddit.com/user/${comment.author}/about.json`).then((resp) => {
-                setImg()
-            })
-        }
-    })
     let nestedComments = null;
     if (comment && comment.hasOwnProperty("replies")) {
         if (comment.replies && comment.replies.hasOwnProperty("data")) {
-            console.log(comment)
             nestedComments = (comment.replies.data.children || []).map((comment) => {
-                return <Comment className="mt-2 mb-3 ml-8" key={comment.data.id} comment={comment.data} type="child" />;
+                return <Comment className="mt-2 mb-3 ml-2 border-l-2" key={comment.data.id} comment={comment.data} type="child" />;
             });
         }
     }
 
     return (
         <div className={className}>
-            <div className="pl-2 text-left">
-                <div className="flex">
-                    <img alt="user-logo"></img>
-                    <div className="p-1 text-sm">{comment.author}</div>
-                    <div className="p-1 text-sm text-gray-500">Posted ago</div>
-                </div>
-                <div className="p-1 text-sm">{comment.body}</div>
-                <div className="flex p-1">
-                    <div className="flex mr-4 votes">
-                        <div>
-                            <FontAwesomeIcon className="text-gray-500 cursor-pointer" icon={faArrowCircleUp} />
+            {comment.author ? (
+                <div className="pl-4 mr-2 text-left">
+                    <div>
+                        <div className="flex">
+                            <div className="mr-1">
+                                <FontAwesomeIcon className="text-gray-500" icon={faUser}></FontAwesomeIcon>
+                            </div>
+                            {comment.is_submitter || comment.distinguished === "moderator" ? (
+                                <div
+                                    className="p-1 text-sm font-bold text-green-600 cursor-pointer hover:underline"
+                                    onClick={() => {
+                                        history.push(`/user/${comment.author}`);
+                                    }}
+                                >
+                                    {comment.author}
+                                </div>
+                            ) : (
+                                <div
+                                    className="p-1 text-sm font-bold cursor-pointer hover:underline"
+                                    onClick={() => {
+                                        history.push(`/user/${comment.author}`);
+                                    }}
+                                >
+                                    {comment.author}
+                                </div>
+                            )}
+                            {comment.distinguished ? <FontAwesomeIcon className="mt-1 mr-1 text-green-600" icon={faShieldVirus}></FontAwesomeIcon> : null}
+                            {comment.is_submitter ? <FontAwesomeIcon className="mt-1 mr-1 text-green-600" icon={faMicrophone}></FontAwesomeIcon> : null}
+                            {comment.edited ? <div className="pt-1 pb-1 pl-1 text-sm italic text-gray-500">edited</div> : null}
+                            <div className="p-1 text-sm text-gray-500 cursor-pointer hover:underline">
+                                {
+                                    <>
+                                        {Math.floor(Math.floor((new Date() - new Date(comment.created_utc * 1000)) / 1000) / 60) && Math.floor(Math.floor((new Date() - new Date(comment.created_utc * 1000)) / 1000) / 60) < 60 ? (
+                                            <div>{Math.floor(Math.floor((new Date() - new Date(comment.created_utc * 1000)) / 1000) / 60)} minutes ago</div>
+                                        ) : Math.floor(Math.floor(Math.floor((new Date() - new Date(comment.created_utc * 1000)) / 1000) / 60) / 60) && Math.floor(Math.floor(Math.floor((new Date() - new Date(comment.created_utc * 1000)) / 1000) / 60) / 60) < 24 ? (
+                                            <div>{Math.floor(Math.floor(Math.floor((new Date() - new Date(comment.created_utc * 1000)) / 1000) / 60) / 60)} hours ago</div>
+                                        ) : Math.floor(Math.floor(Math.floor(Math.floor((new Date() - new Date(comment.created_utc * 1000)) / 1000) / 60) / 60) / 24) ? (
+                                            <div>{Math.floor(Math.floor(Math.floor(Math.floor((new Date() - new Date(comment.created_utc * 1000)) / 1000) / 60) / 60) / 24)} days ago</div>
+                                        ) : null}
+                                    </>
+                                }
+                            </div>
+                            {comment.stickied ? <div className="p-1 text-sm font-bold text-green-600">Stickied comment</div> : null}
                         </div>
-                        <div className="m-1 text-xs font-bold text-black">{comment.score}</div>
-                        <div>
-                            <FontAwesomeIcon className="text-gray-500 cursor-pointer" icon={faArrowCircleDown} />
+                        <div className="p-1 ml-2 text-sm">{ReactHtmlParser(ReactHtmlParser(comment.body_html))}</div>
+                        <div className="flex p-1">
+                            <div className="flex mr-4 votes">
+                                <div>
+                                    <FontAwesomeIcon className="text-gray-500 cursor-pointer" icon={faArrowCircleUp} />
+                                </div>
+                                <div className="m-1 text-xs font-bold text-black">{comment.score}</div>
+                                <div>
+                                    <FontAwesomeIcon className="text-gray-500 cursor-pointer" icon={faArrowCircleDown} />
+                                </div>
+                            </div>
+                            <div className="flex mr-3 text-gray-500 reply">
+                                <FontAwesomeIcon className="mt-1 cursor-pointer" icon={faCommentAlt} />
+                                <div className="m-1 text-xs font-bold">Reply</div>
+                            </div>
                         </div>
-                    </div>
-                    <div className="flex mr-3 text-gray-500 reply">
-                        <FontAwesomeIcon className="mt-1 cursor-pointer" icon={faComment} />
-                        <div className="m-1 text-xs font-bold">Reply</div>
-                    </div>
-                    <div className="flex mr-3 text-gray-500 reply">
-                        <div className="m-1 text-xs font-bold">Share</div>
-                    </div>
-                    <div className="flex mr-3 text-gray-500 reply">
-                        <div className="m-1 text-xs font-bold">Report</div>
-                    </div>
-                    <div className="flex mr-3 text-gray-500 reply">
-                        <div className="m-1 text-xs font-bold">Save</div>
+                        {nestedComments}
                     </div>
                 </div>
-            </div>
-            {nestedComments}
+            ) : null}
         </div>
     );
 }
@@ -68,7 +90,7 @@ const CommentsComponent = ({ comments }) => {
         <div>
             <div className="bg-white rounded w-160">
                 {comments.map((comment) => {
-                    return <Comment key={comment.id} className="mt-2" comment={comment} />;
+                    return <Comment key={comment.id} className="pt-2 mt-4" comment={comment} />;
                 })}
             </div>
         </div>

@@ -36,19 +36,20 @@ const PostDetailComponent = () => {
                 let consumableComments = [];
                 res.data[1].data.children.forEach((child) => {
                     let data = child.data;
-                    console.log(data);
-                    Axios.get(`https://www.reddit.com/user/${data.author}/about.json`).then((resp) => {
-                        consumableComments.push({
-                            id: data.id,
-                            author: data.author,
-                            body: data.body,
-                            created: data.created,
-                            replies: data.replies,
-                            score: data.score,
-                            authorImg: resp.data.data.icon_img,
-                        });
-                        setComments(consumableComments);
+                    consumableComments.push({
+                        id: data.id,
+                        author: data.author,
+                        body: data.body,
+                        body_html: data.body_html,
+                        created_utc: data.created_utc,
+                        replies: data.replies,
+                        score: data.score,
+                        stickied: data.stickied,
+                        is_submitter: data.is_submitter,
+                        distinguished: data.distinguished,
+                        edited: data.edited,
                     });
+                    setComments(consumableComments);
                 });
                 setLoading(false);
             })
@@ -94,9 +95,7 @@ const PostDetailComponent = () => {
         <div className="p-12 mt-2">
             <div className="container flex">
                 <DetailsComponent posts={post} loading={loading}>
-                    <div className="container">
-                        <CommentsComponent comments={comments}></CommentsComponent>
-                    </div>
+                    <CommentsComponent comments={comments}></CommentsComponent>
                 </DetailsComponent>
                 <SideBarComponent sideBarLoading={sideBarLoading} subRedditInfo={subRedditInfo}></SideBarComponent>
             </div>
