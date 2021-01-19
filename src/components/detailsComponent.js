@@ -41,7 +41,6 @@ const DetailsComponent = (props) => {
                                     <FontAwesomeIcon className="ml-1 mr-1 cursor-pointer" icon={faArrowCircleDown} />
                                 </div>
                             </div>
-                            <div className="w-full"></div>
                         </div>
                     </div>
                 </div>
@@ -50,8 +49,8 @@ const DetailsComponent = (props) => {
                     {/* Post cards */}
                     <div className="w-160 sm:w-100">
                         {posts.map((post) => (
-                            <div>
-                                <div key={post.id} className="flex mb-4 bg-white border-2 rounded hover:border-gray-300">
+                            <div key={post.id}>
+                                <div className="flex mb-4 bg-white border-2 rounded hover:border-gray-300">
                                     <div className="w-10 text-center bg-gray-50 rounded-l-r">
                                         <div>
                                             <FontAwesomeIcon className="mt-3 ml-1 mr-1 cursor-pointer" icon={faArrowCircleUp} />

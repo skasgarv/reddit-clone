@@ -1,4 +1,4 @@
-import { faBahai, faBirthdayCake, faComment, faCommentAlt } from "@fortawesome/free-solid-svg-icons";
+import { faBahai, faBirthdayCake, faCommentAlt } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Axios from "axios";
 import { useEffect, useState } from "react";
@@ -156,10 +156,10 @@ const UserDetailComponent = () => {
                         <div className="ml-4">
                             <div className="flex">
                                 <div className="bg-white rounded">
-                                    <div className="h-20 p-2 m-2 bg-white">
+                                    <div className="h-20 p-2 bg-blue-600 rounded-t">
                                         <img className="w-20 h-20 text-left" src={userInfo.icon_img} alt="icon_img"></img>
                                     </div>
-                                    <div className="mt-1 ml-2 text-xs font-semibold text-left">u/{userInfo.name}</div>
+                                    <div className="mt-2 ml-2 text-xs font-semibold text-left">u/{userInfo.name}</div>
 
                                     <div className="flex pb-2 pr-2 mt-2">
                                         <div className="ml-2 mr-12 text-sm font-semibold text-left">

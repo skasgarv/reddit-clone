@@ -3,9 +3,9 @@ import { useEffect, useState } from "react";
 
 import TrendingTodayCard from "./trendingTodayCardComponent";
 
-const TrendingTodayComponent = (props) => {
+const TrendingTodayComponent = () => {
     const [trendingPosts, setTrendingPosts] = useState([]);
-    const loading = props.loading;
+    const [loading, setLoading] = useState(true);
     useEffect(() => {
         Axios.get("https://www.reddit.com/api/trending_searches_v1.json")
             .then((res) => {
@@ -17,6 +17,7 @@ const TrendingTodayComponent = (props) => {
                         return null;
                     })
                 );
+                setLoading(false);
             })
             .catch((err) => console.error("Unable to fetch trending posts: ", err));
     }, []);
@@ -31,7 +32,7 @@ const TrendingTodayComponent = (props) => {
                 </div>
             ) : (
                 <div className="container mx-auto">
-                    <div className="m-1" align="left">
+                    <div className="m-1 mt-2 text-sm font-semibold" align="left">
                         Trending Today
                     </div>
                     <div className="flex mb-4">

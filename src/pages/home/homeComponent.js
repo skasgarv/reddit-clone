@@ -78,7 +78,7 @@ const HomeComponent = () => {
 
     return (
         <div className="p-12">
-            <TrendingTodayComponent loading={loading}></TrendingTodayComponent>
+            <TrendingTodayComponent></TrendingTodayComponent>
             <div className="ml-8">
                 <FilterComponent filterClicked={filterClicked}></FilterComponent>
             </div>

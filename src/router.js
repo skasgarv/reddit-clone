@@ -3,8 +3,8 @@ import { Route, Router, Switch } from "react-router-dom";
 
 import history from "./history";
 import HomeComponent from "./pages/home/homeComponent";
+import PendingComponent from "./pages/pending/pendingComponent";
 import PostDetailComponent from "./pages/postDetail/postDetailComponent";
-import SearchResults from "./pages/searchResults/searchResultsComponent";
 import SubRedditPageComponent from "./pages/subReddit/subRedditComponent";
 import UserDetailComponent from "./pages/userDetail/userDetailComponent";
 
@@ -13,7 +13,7 @@ function Routes() {
         <Router history={history}>
             <Switch>
                 <Route path="/" exact component={HomeComponent}></Route>
-                <Route path="/search" component={SearchResults}></Route>
+                <Route path="/search" component={PendingComponent}></Route>
                 <Route path="/r/" component={SubRedditPageComponent}></Route>
                 <Route path="/subRedditDetails/" component={PostDetailComponent}></Route>
                 <Route path="/user/" component={UserDetailComponent}></Route>

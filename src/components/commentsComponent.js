@@ -18,8 +18,8 @@ function Comment({ comment, className }) {
     return (
         <div className={className}>
             {comment.author ? (
-                <div className="pl-4 mr-2 text-left">
-                    <div>
+                <div className="pl-3 pr-3 text-left">
+                    <div className="pl-1 pr-1 rounded bg-blue-50">
                         <div className="flex">
                             <div className="mr-1">
                                 <FontAwesomeIcon className="text-gray-500" icon={faUser}></FontAwesomeIcon>
@@ -90,7 +90,7 @@ const CommentsComponent = ({ comments }) => {
         <div>
             <div className="bg-white rounded w-160">
                 {comments.map((comment) => {
-                    return <Comment key={comment.id} className="pt-2 mt-4" comment={comment} />;
+                    return <Comment key={comment.id} className="pt-2 mt-2" comment={comment} />;
                 })}
             </div>
         </div>
