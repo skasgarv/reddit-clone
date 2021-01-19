@@ -102,7 +102,7 @@ const UserDetailComponent = () => {
     };
 
     return (
-        <div class="pt-14">
+        <div className="pt-14">
             <div className="">
                 <FilterComponent filterClicked={filterClicked}></FilterComponent>
             </div>
@@ -112,15 +112,16 @@ const UserDetailComponent = () => {
                         <div className="text-left cursor-pointer">
                             <div className="ml-2 mr-2">
                                 <div>
+                                {!posts.length ? <div>No Posts for User</div>: null}
                                     {posts.map((post) => (
-                                        <div className="mt-2">
+                                        <div key={post.id}className="mt-2">
                                             <DetailsComponent posts={[post]} loading={loading}>
                                                 <div className="mb-4">
                                                     {comments.map((comment) =>
                                                         comment.link_id === post.name ? (
                                                             <div className="flex p-1 m-1 rounded bg-blue-50">
                                                                 <FontAwesomeIcon className="mt-3 ml-1 mr-3" icon={faCommentAlt}></FontAwesomeIcon>
-                                                                <div className="">
+                                                                <div>
                                                                     <div className="flex">
                                                                         <div className="m-1 text-xs font-bold">{comment.author}</div>
                                                                         <div className="m-1 text-xs text-gray-500">{comment.score} points • </div>

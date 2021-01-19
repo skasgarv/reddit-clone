@@ -67,7 +67,7 @@ const DetailsComponent = (props) => {
                                                 <p className="p-1 text-xs text-blue-500">PROMOTED</p>
                                             ) : (
                                                 <div className="flex">
-                                                    <p className="ml-2 text-xs font-bold cursor-pointer hover:underline" onClick={() => history.push(`${post.subreddit_name_prefixed}`)}>
+                                                    <p className="ml-2 text-xs font-bold cursor-pointer hover:underline" onClick={() => history.push(`/r/${post.subreddit_name_prefixed.split("/")[1]}`)}>
                                                         {post.subreddit_name_prefixed}
                                                     </p>
                                                 </div>
