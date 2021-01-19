@@ -7,6 +7,8 @@ import PostDetailComponent from "./pages/postDetail/postDetailComponent";
 import SearchResults from "./pages/searchResults/searchResultsComponent";
 import SubRedditPageComponent from "./pages/subReddit/subRedditComponent";
 import UserDetailComponent from "./pages/userDetail/userDetailComponent";
+import LoginComponent from "./pages/login/login";
+import SignUpComponent from "./pages/signUp/signUp";
 
 function Routes() {
     return (
@@ -17,6 +19,8 @@ function Routes() {
                 <Route path="/r/" component={SubRedditPageComponent}></Route>
                 <Route path="/subRedditDetails/" component={PostDetailComponent}></Route>
                 <Route path="/user/" component={UserDetailComponent}></Route>
+                <Route path="/login/" component={LoginComponent}></Route>
+                <Route path="/signUp/" component={SignUpComponent}></Route>
             </Switch>
         </Router>
     );
